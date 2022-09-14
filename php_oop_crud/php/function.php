@@ -12,23 +12,19 @@ function signUp()
 {
     if(isset($_POST['signup']))
     {
-        $validate = new SignupValidator($_POST);
-        $validated = $validate->validatedForm();
-        $errors = $validate->validateErrorForm();
+        $validate   = new SignupValidator($_POST);
+        $validated  = $validate->validatedForm();
+        $errors     = $validate->validateErrorForm();
 
         if(count($errors) > 0)
         {
             return $validated;
-        }else{
-            $name = $_POST['fullname'];
-            $uName = $_POST['username'];
-            $email = $_POST['email'];
-            $pwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            $user = new Signup($name,$uName,$email,$pwd);
+        }else{
+            $user = new Signup($_POST);
             $user = $user->register();
-            $_SESSION['fullname'] = $user['fullname'];
-            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['fullname']   = $user['fullname'];
+            $_SESSION['user_id']    = $user['user_id'];
             header('Location:/php_oop_crud');
         }
     }
@@ -38,10 +34,10 @@ function logIn()
 {
     if(isset($_POST['login']))
     {
-        $u_id = $_POST['u_id'];
-        $pwd = $_POST['password'];
-        $user = new Login($u_id,$pwd);
-        $user = $user->logIn();
+        $u_id   = $_POST['u_id'];
+        $pwd    = $_POST['password'];
+        $user   = new Login($_POST);
+        $user   = $user->logIn();
         
         if($user['isUser'] == false)
         {
@@ -51,8 +47,8 @@ function logIn()
                 'text-danger' => 'text-danger'
             ];
         }else{
-            $_SESSION['fullname'] = $user['fullname'];
-            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['fullname']   = $user['fullname'];
+            $_SESSION['user_id']    = $user['user_id'];
             header('Location:/php_oop_crud');
         }
     }
@@ -62,28 +58,16 @@ function insert()
 {
     if(isset($_POST['submit']))
     {
-        $validate = new EmployeeValidator($_POST);
-        $validated = $validate->validatedForm();
-        $errors = $validate->validateErrorForm();
+        $validate   = new EmployeeValidator($_POST);
+        $validated  = $validate->validatedForm();
+        $errors     = $validate->validateErrorForm();
        
         if(count($errors) > 0)
         {
             return $validated;
+
         }else{
-            $employee = new Employee();
-            $totalEmp = $employee->generateEmpNo() + 1;
-            $firstname = $_POST['firstname'];
-            $lastname = $_POST['lastname'];
-            $address = $_POST['address'];
-            $birthday = $_POST['birthday'];
-            $department = $_POST['department'];
-            $position = $_POST['position'];
-            $status = $_POST['status'];
-            $salary = $_POST['salary'];
-            $employee_no = 'E-NO' . $totalEmp;
-
-
-            $employee->setRecords($firstname,$lastname,$employee_no,$address,$birthday,$department,$position,$status,$salary);
+            $employee = new Employee($_POST);
             if($employee->insert())
             {
                 $_SESSION['message'] = '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -100,11 +84,7 @@ function delete()
 {
     if(isset($_POST['delete_employee']))
     {
-        $id = $_POST['empId'];
-
-        $employee = new Employee();
-        $employee->setID($id);
-
+        $employee = new Employee($_POST);
         if($employee->delete()){
            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>Holy guacamole!</strong> You have successfully deleted an employee' . "'" . 's record!
@@ -118,12 +98,8 @@ function getId()
 {
     if(isset($_GET['id']))
     {
-        $id = $_GET['id'];
-
-        $employee = new Employee();
-        $employee->setId($id);
-
-        $employees = $employee->edit();
+        $employee   = new Employee($_GET);
+        $employees  = $employee->edit();
         return $employees;
     }
 }
@@ -132,27 +108,15 @@ function update()
 {
     if(isset($_POST['update']))
     {
-        $validate = new EmployeeValidator($_POST);
-        $validated = $validate->validatedForm();
-        $errors = $validate->validateErrorForm();
+        $validate   = new EmployeeValidator($_POST);
+        $validated  = $validate->validatedForm();
+        $errors     = $validate->validateErrorForm();
         if(count($errors) > 0)
         {
             return $errors;
+
         }else{
-            $id = $_POST['id'];
-            $emp_no = $_POST['emp_no'];
-            $firstname = $_POST['firstname'];
-            $lastname = $_POST['lastname'];
-            $address = $_POST['address'];
-            $birthday = $_POST['birthday'];
-            $department = $_POST['department'];
-            $position = $_POST['position'];
-            $status = $_POST['status'];
-            $salary = $_POST['salary'];
-            
-            $employee = new Employee();
-            $employee->setRecords($firstname,$lastname,$emp_no,$address,$birthday,$department,$position,$status,$salary);
-            $employee->setId($id);
+            $employee = new Employee($_POST);
             if($employee->update())
             {
                 $_SESSION['message'] = '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -167,8 +131,9 @@ function update()
 
 function fetch_data()
 {
-    $employee = new Employee();
-    $employees = $employee->read();
+    $data       = null;
+    $employee   = new Employee($data);
+    $employees  = $employee->read();
     foreach ($employees as $key => $employee)
     {
         echo 
@@ -205,3 +170,4 @@ function check_session()
         header('Location:/php_oop_crud/login.php');
     }
 }
+?>
