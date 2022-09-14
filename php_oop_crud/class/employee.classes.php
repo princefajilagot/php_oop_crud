@@ -1,56 +1,40 @@
 <?php
 class Employee extends Config{
-    protected $firstname = null;
-    protected $lastname = null;
-    protected $employee_no = null;
-    protected $address = null;
-    protected $birthday = null;
-    protected $department = null;
-    protected $position = null;
-    protected $status = null;
-    protected $salary = null;
-    protected $id = null;
-
-    public function setId($id){
-        $this->id = $id;
-    }
-
-    public function setRecords($firstname,$lastname,$employee_no,$address,$birthday,$department,$position,$status,$salary)
+    protected $data = null;
+    
+    public function __construct($data)
     {
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
-        $this->employee_no = $employee_no;
-        $this->address = $address;
-        $this->birthday = $birthday;
-        $this->department = $department;
-        $this->position = $position;
-        $this->status = $status;
-        $this->salary = $salary;
+        $this->data = $data;
     }
 
     public function generateEmpNo(){
-        $con = $this->conn();
-        $sql = "SELECT * FROM `employee`";
-        $data = $con->prepare($sql);
+        $con    = $this->conn();
+        $sql    = "SELECT MAX(emp_no) AS emp_no FROM `employee`";
+        $data   = $con->prepare($sql);
         $data->execute();
 
-        $result = $data->fetchAll(PDO::FETCH_ASSOC);
-        $totalEmp = count($result);
-        return $totalEmp;
+        $result     = $data->fetchAll();
+        $maxEmpNo   = $result[0]['emp_no'];
+        return $maxEmpNo;
     }
 
     public function insert()
     {
-        $conn = $this->conn();
-        $firstname = $conn->quote($this->firstname);
-        $lastname = $conn->quote($this->lastname);
-        $address = $conn->quote($this->address);
-        $department = $conn->quote($this->department);
-        $position = $conn->quote($this->position);
+        $conn       = $this->conn();
+        $firstname  = $conn->quote($this->data['firstname']);
+        $lastname   = $conn->quote($this->data['lastname']);
+        $address    = $conn->quote($this->data['address']);
+        $department = $conn->quote($this->data['department']);
+        $position   = $conn->quote($this->data['position']);
+        $salary     = $this->data['salary'];
+        $status     = $this->data['status'];
+        $birthday   = $this->data['birthday'];
+        $emp_no     = $this->generateEmpNo() + 1;
+        
         $sql = "INSERT INTO `employee`
             (`firstname`, `lastname`, `emp_no`, `address`, `birthday`, `status`, `department`, `position`, `salary`, `created_at`)
             VALUES
-            ($firstname,$lastname,'$this->employee_no',$address,'$this->birthday','$this->status',$department,$position,'$this->salary',NOW())";
+            ($firstname,$lastname,'$emp_no',$address,'$birthday','$status',$department,$position,'$salary',NOW())";
         $data = $conn->prepare($sql);
         if($data->execute()){
             return true;
@@ -71,7 +55,8 @@ class Employee extends Config{
     public function delete()
     {
         $conn = $this->conn();
-        $sql = "DELETE FROM `employee` WHERE id = $this->id";
+        $id = $this->data['empId'];
+        $sql = "DELETE FROM `employee` WHERE id = $id";
         $data = $conn->prepare($sql);
         if($data->execute())
         {
@@ -82,7 +67,8 @@ class Employee extends Config{
     public function edit()
     {
         $conn = $this->conn();
-        $sql = "SELECT * FROM `employee` WHERE id = $this->id";
+        $id = $this->data['id'];
+        $sql = "SELECT * FROM `employee` WHERE id = $id";
         $data = $conn->prepare($sql);
         
        if($data->execute())
@@ -94,13 +80,17 @@ class Employee extends Config{
 
     public function update()
     {
-        $conn = $this->conn();
-        $firstname = $conn->quote($this->firstname);
-        $lastname = $conn->quote($this->lastname);
-        $address = $conn->quote($this->address);
-        $department = $conn->quote($this->department);
-        $position = $conn->quote($this->position);
-        $sql = "UPDATE `employee` SET `firstname`=$firstname,`lastname`=$lastname,`address`=$address,`birthday`='$this->birthday',`status`='$this->status',`department`=$department,`position`=$position,`salary`='$this->salary',`updated_at`=NOW() WHERE id = '$this->id'";
+        $conn       = $this->conn();
+        $id         = $this->data['id'];
+        $firstname  = $conn->quote($this->data['firstname']);
+        $lastname   = $conn->quote($this->data['lastname']);
+        $address    = $conn->quote($this->data['address']);
+        $department = $conn->quote($this->data['department']);
+        $position   = $conn->quote($this->data['position']);
+        $salary     = $this->data['salary'];
+        $status     = $this->data['status'];
+        $birthday   = $this->data['birthday'];
+        $sql = "UPDATE `employee` SET `firstname`=$firstname,`lastname`=$lastname,`address`=$address,`birthday`='$birthday',`status`='$status',`department`=$department,`position`=$position,`salary`='$salary',`updated_at`=NOW() WHERE id = '$id'";
         $data = $conn->prepare($sql);
 
         if($data->execute())
@@ -109,4 +99,4 @@ class Employee extends Config{
         }
     }
 }
-
+?>
