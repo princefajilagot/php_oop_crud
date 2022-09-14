@@ -43,15 +43,21 @@ $emp_record = getId();
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="mb-2" for="#dept"><strong>Department</strong></label>
                     <input class="form-control" id="dept" id type="text" value="<?php echo htmlspecialchars($emp_record['address'], ENT_QUOTES); ?>" disabled>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <label class="mb-2" for="#dept"><strong>Status</strong></label>
+                    <input class="form-control" id="stat" id type="text" value="<?php echo htmlspecialchars($emp_record['status'], ENT_QUOTES); ?>" disabled>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
                     <label class="mb-2" for="#position"><strong>Position</strong></label>
                     <input class="form-control" id="position" id type="text" value="<?php echo htmlspecialchars($emp_record['position'], ENT_QUOTES); ?>" disabled>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="mb-2" for="#salary"><strong>Salary</strong></label>
                     <input class="form-control" id="salary" id type="text" value="<?php echo $emp_record['salary']; ?>" disabled>
                 </div>
