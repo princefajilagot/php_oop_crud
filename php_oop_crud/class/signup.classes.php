@@ -1,27 +1,21 @@
 <?php
 class Signup extends Config
 {
-    private $name;
-    private $uName;
-    private $email;
-    private $pwd;
+    private $data = null;
     private $user = [];
 
-    public function __construct($name,$uName,$email,$pwd)
+    public function __construct($data)
     {
-        $this->name = $name;
-        $this->uName = $uName;
-        $this->email = $email;
-        $this->pwd = $pwd;
+        $this->data = $data;
     }
 
     public function register(){
-        $conn = $this->conn();
-        $name = $conn->quote($this->name);
-        $uName = $conn->quote($this->uName);
-        $email = $conn->quote($this->email);
-        $pwd = $conn->quote($this->pwd);
-        $sql = "INSERT INTO `user`(`fullname`, `username`, `email`, `password`, `created_at`)
+        $conn   = $this->conn();
+        $name   = $conn->quote($this->data['fullname']);
+        $uName  = $conn->quote($this->data['username']);
+        $email  = $conn->quote($this->data['email']);
+        $pwd    = $conn->quote(password_hash($this->data['password'], PASSWORD_DEFAULT));
+        $sql    = "INSERT INTO `user`(`fullname`, `username`, `email`, `password`, `created_at`)
                 VALUES
                 ($name,$uName,$email,$pwd,NOW())";
         $data = $conn->prepare($sql);
@@ -30,9 +24,10 @@ class Signup extends Config
             $last_id = $conn->lastInsertId();
            
             return $this->user = [
-                'fullname'  => $this->name,
+                'fullname'  => $this->data['fullname'],
                 'user_id'   => $last_id
             ];
         }
     }
 }
+?>
