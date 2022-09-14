@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 12, 2022 at 11:26 AM
+-- Generation Time: Sep 14, 2022 at 08:43 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `employee_management_system`
+-- Database: `php_oop_crud`
 --
 
 -- --------------------------------------------------------
@@ -42,13 +42,6 @@ CREATE TABLE `employee` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `employee`
---
-
-INSERT INTO `employee` (`id`, `firstname`, `lastname`, `emp_no`, `address`, `birthday`, `status`, `department`, `position`, `salary`, `created_at`, `updated_at`) VALUES
-(37, 'Monic', 'Fabregas', 'E-NO2', 'Sta Mesa Manila', '1995-08-26', 'Regular', 'Logistics', 'Material Planner', 25000, '2022-09-12 12:33:40', '2022-09-12 12:34:28');
-
 -- --------------------------------------------------------
 
 --
@@ -64,14 +57,6 @@ CREATE TABLE `user` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `fullname`, `username`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'Princelito Fajilagot', 'princefaji', 'princelitofajilagot@gmail.com', '25d55ad283aa400af464c76d713c07ad', '2022-09-12 14:59:26', '2022-09-12 08:58:32'),
-(4, 'Monic Fabregas', 'monic26', 'monic@gmail.com', 'b92918c35624f2cb1e31e65d77751590', '2022-09-12 17:20:48', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
