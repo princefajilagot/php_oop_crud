@@ -1,20 +1,19 @@
 <?php
 class Login extends Config
 {
-    private $u_id;
-    private $pwd;
+    private $data;
     private $user = [];
-    private $error;
 
-    public function __construct($u_id,$pwd)
+    public function __construct($data)
     {
-        $this->u_id = $u_id;
-        $this->pwd = $pwd;
+        $this->data = $data;
     }
 
     public function logIn(){
         $conn = $this->conn();
-        $u_id = $conn->quote($this->u_id);
+        $u_id = $conn->quote($this->data['u_id']);
+        $pwd = $conn->quote($this->data['password']);
+
         $sql = "SELECT * FROM `user` WHERE `email` = $u_id OR `username` = $u_id";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -22,7 +21,7 @@ class Login extends Config
         {
             if($result = $stmt->fetch())
             {
-                if(password_verify($this->pwd,$result['password']))
+                if(password_verify($this->data['password'],$result['password']))
                 {
                     return $this->user = [
                         'fullname'  => $result['fullname'],
@@ -38,3 +37,4 @@ class Login extends Config
         }
     }
 }
+?>
