@@ -113,7 +113,7 @@ function update()
         $errors     = $validate->validateErrorForm();
         if(count($errors) > 0)
         {
-            return $errors;
+            return $result = array($validated,$_POST);
 
         }else{
             $employee = new Employee($_POST);
