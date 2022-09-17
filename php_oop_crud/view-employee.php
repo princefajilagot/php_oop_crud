@@ -3,14 +3,14 @@ require_once 'php/init.php';
 check_session();
 $emp_record = getId();
 ?>
-<div class="container mt-5 w-50">
-    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+<div class="container mt-5">
+    <nav class="card col-md-8 offset-md-2 mb-5" style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a class="text-decoration-none fw-semibold" href="/php_oop_crud">Dashboard</a></li>
             <li class="breadcrumb-item active fw-semibold" aria-current="page">Employee's Record</li>
         </ol>
     </nav>
-    <div class="card mb-5">
+    <div class="card col-md-8 offset-md-2 mb-5">
         <div class="card-header text-center">
             <h4 class="fw-semi-bold">EMPLOYEE PROFILE PAGE</h4></h4>
         </div>
